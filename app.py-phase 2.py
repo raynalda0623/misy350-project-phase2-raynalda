@@ -768,15 +768,18 @@ elif st.session_state["role"] == "Employee":
             user_input = st.chat_input("Ask a question...")
 
             if user_input:
-                with st.spinner("Thinking..."):
-                    st.session_state["messages"].append(
-                        {"role": "user", "content": user_input}
-                    )
-                    ai_response = simulated_chatbot(user_input)
-                    st.session_state["messages"].append(
-                        {"role": "assistant", "content": ai_response}
-                    )
-                    time.sleep(1)
+                st.session_state['messages'].append({'role': 'user', 'content': user_input})
+                with st.spinner('Thinking...'):
+                    try:
+                        ai_response = get_ai_response(
+                            client,
+                            st.session_state['messages'],
+                            st.session_state['inventory'],
+                            st.session_state['sales']
+                        )
+                    except Exception as e:
+                        ai_response = 'Sorry, I could not connect to the AI. Error: ' + str(e)
+                st.session_state['messages'].append({'role': 'assistant', 'content': ai_response})
                 st.rerun()
 
             if st.button("Clear Chat", key="clear_chat_btn"):
