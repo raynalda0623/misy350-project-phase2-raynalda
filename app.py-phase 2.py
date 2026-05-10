@@ -34,6 +34,14 @@ def save_users():
     with open(users_file, "w", encoding="utf-8") as f:
         json.dump(st.session_state["users"], f, indent=2)
 
+# functions to find users and load data from JSON files
+ 
+def find_user(users, username, password):
+    for u in users:
+        if u['username'] == username and u['password'] == password:
+            return u
+    return None
+
 #Inventory
 
 def load_inventory():
@@ -113,6 +121,7 @@ def load_users():
     with open(users_file, 'w', encoding='utf-8') as f:
         json.dump(default, f, indent=2)
     return default
+
 
 
 #Initalizing Session State 
