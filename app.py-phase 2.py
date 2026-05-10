@@ -85,6 +85,20 @@ def place_sale(inventory, sales, item_id, quantity, username):
             return new_sale, 'Sale logged successfully.'
     return None, 'Item not found.'
 
+def get_sales_by_employee(sales, username):
+    result = []
+    for s in sales:
+        if s['logged_by'] == username:
+            result.append(s)
+    return result
+ 
+ 
+def get_total_sales_revenue(sales):
+    total = 0
+    for s in sales:
+        total = total + s['total']
+    return round(total, 2)
+
 
 #Inventory
 
