@@ -359,24 +359,18 @@ if st.session_state["role"] is None:
             )
 
         if register_btn:
-            uname = reg_username.strip()
-            pwd   = reg_password.strip()
-            if not uname or not pwd or not reg_confirm.strip():
-                st.warning("Please fill in all fields.")
-            elif pwd != reg_confirm.strip():
-                st.error("Passwords do not match.")
-            elif len(pwd) < 4:
-                st.warning("Password must be at least 4 characters.")
-            elif any(u["username"] == uname for u in st.session_state["users"]):
-                st.error("That username is already taken.")
-            else:
-                with st.spinner("Creating account..."):
-                    st.session_state["users"].append(
-                        {"username": uname, "password": pwd, "role": "Employee"}
-                    )
-                    save_users()
-                    time.sleep(1)
-                st.success(f"Account created! You can now log in as **{uname}**.")
+    new_user, message = register_user(
+        st.session_state["users"], reg_username, reg_password, reg_confirm
+    )
+    if new_user:
+        with st.spinner("Creating account..."):
+            save_users()
+            time.sleep(1)
+        st.success("Account created! You can now log in as " + reg_username + ".")
+    elif "taken" in message:
+        st.error(message)
+    else:
+        st.warning(message)
 
 # OWNER DASHBOARD 
 elif st.session_state["role"] == "Owner":
@@ -659,7 +653,9 @@ elif st.session_state["role"] == "Owner":
         else:
             col1, col2 = st.columns(2)
             col1.metric("Total Transactions", len(sales))
-            col2.metric("Total Revenue",      f"${sum(s['total'] for s in sales):.2f}")
+            total_revenue = get_total_sales_revenue(sales)
+            col2.metric('Total Revenue', '$' + str(total_revenue))
+
             st.divider()
 
             for sale in reversed(sales):
