@@ -730,46 +730,32 @@ elif st.session_state["role"] == "Employee":
                     st.markdown(f"**Sale total:** ${round(selected_item['price'] * quantity, 2):.2f}")
 
     
-                    if st.button("Create Order", type="primary",
-                                 use_container_width=True, key="create_order_btn"):
-                        if selected_item["stock"] < quantity:
-                            st.error(
-                                f"❌ Not enough stock — only **{selected_item['stock']}** available."
-                            )
-                        else:
-                            with st.spinner("Creating order..."):
-                                total = round(quantity * selected_item["price"], 2)
+                    if st.button('Create Order', ...):
+                        new_sale, message = place_sale(
+                        st.session_state['inventory'],
+                        st.session_state['sales'],
+                        selected_item['item_id'],
+                        quantity,
+                        user['username']
+                    )
+                    if new_sale:
+                        with st.spinner('Creating order...'):
+                            save_inventory()
+                            save_sales()
+                            time.sleep(1)
+                        st.balloons()
+                        time.sleep(1)
+                        st.session_state['page'] = 'home'
+                        st.rerun()
+                    else:
+                        st.error(message)
 
-                                # Update stock
-                                for item in st.session_state["inventory"]:
-                                    if item["item_id"] == selected_item["item_id"]:
-                                        item["stock"] -= quantity
-                                        if item["stock"] < 5:
-                                            item["flagged"] = True
-                                        break
 
-                                # Append sale record
-                                new_sale = {
-                                    "sale_id":    str(uuid.uuid4())[:8].upper(),
-                                    "item":       selected_item["name"],
-                                    "item_id":    selected_item["item_id"],
-                                    "quantity":   quantity,
-                                    "unit_price": selected_item["price"],
-                                    "total":      total,
-                                    "logged_by":  user["username"],
-                                    "date":       time.strftime("%Y-%m-%d %H:%M"),
-                                }
-                                st.session_state["sales"].append(new_sale)
+                        st.balloons()              
+                        time.sleep(2)
 
-                                # Save both JSON files  
-                                save_inventory()
-                                save_sales()
-
-                                st.balloons()              
-                                time.sleep(2)
-
-                            st.session_state["page"] = "home"
-                            st.rerun()
+                        st.session_state["page"] = "home"
+                        st.rerun()
 
         with right_col:
             st.subheader("Shop Assistant")
