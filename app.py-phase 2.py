@@ -210,6 +210,17 @@ if "messages" not in st.session_state:
         {"role": "assistant", "content": "Hi! How can I help you today?"}
     ]
 
+# set up openai client - uses sales data for context
+api_key = os.getenv('OPENAI_API_KEY')
+if not api_key:
+    api_key = ''
+ 
+client = None
+if api_key != '':
+    client = OpenAI(api_key=api_key)
+
+
+
 ## AI Assistant
 # i used this to replace the simulated chatbot
 # it pulls from the inventory and sales data
