@@ -105,13 +105,15 @@ def load_users():
     default = [
         {"username": "owner",    "password": "owner123",    "role": "Owner"},
         {"username": "employee", "password": "employee123", "role": "Employee"},
+        {"username": "alice",    "password": "alice123",    "role": "Employee"},
     ]
     if users_file.exists():
-        with open(users_file, "r", encoding="utf-8") as f:
+        with open(users_file, 'r', encoding='utf-8') as f:
             return json.load(f)
-    with open(users_file, "w", encoding="utf-8") as f:
+    with open(users_file, 'w', encoding='utf-8') as f:
         json.dump(default, f, indent=2)
     return default
+
 
 #Initalizing Session State 
 
