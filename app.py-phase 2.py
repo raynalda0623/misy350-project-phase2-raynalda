@@ -63,6 +63,28 @@ def register_user(users, username, password, confirm):
     users.append(new_user)
     return new_user, 'Account created! You can now log in as ' + username + '.'
 
+def place_sale(inventory, sales, item_id, quantity, username):
+    for item in inventory:
+        if item['item_id'] == item_id:
+            if item['stock'] < quantity:
+                return None, 'Not enough stock - only ' + str(item['stock']) + ' available.'
+            item['stock'] = item['stock'] - quantity
+            if item['stock'] < 5:
+                item['flagged'] = True
+            new_sale = {
+                'sale_id': str(uuid.uuid4())[:8].upper(),
+                'item': item['name'],
+                'item_id': item_id,
+                'quantity': quantity,
+                'unit_price': item['price'],
+                'total': round(quantity * item['price'], 2),
+                'logged_by': username,
+                'date': time.strftime('%Y-%m-%d %H:%M'),
+            }
+            sales.append(new_sale)
+            return new_sale, 'Sale logged successfully.'
+    return None, 'Item not found.'
+
 
 #Inventory
 
