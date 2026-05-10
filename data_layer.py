@@ -24,3 +24,14 @@ def load_users():
     data = load_data(USERS_PATH)
     return data
 
+def load_users():
+    data = load_data(USERS_PATH)
+    if not data:
+        default = [
+            {"username": "owner",    "password": "owner123",    "role": "Owner"},
+            {"username": "employee", "password": "employee123", "role": "Employee"},
+            {"username": "alice",    "password": "alice123",    "role": "Employee"},
+        ]
+        save_data(USERS_PATH, default)
+        return default
+    return data
