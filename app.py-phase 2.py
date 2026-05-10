@@ -321,12 +321,8 @@ if st.session_state["role"] is None:
             if not login_username.strip() or not login_password.strip():
                 st.warning("Please enter both username and password.")
             else:
-                found = next(
-                    (u for u in st.session_state["users"]
-                     if u["username"] == login_username.strip()
-                     and u["password"] == login_password.strip()),
-                    None
-                )
+                found = find_user(st.session_state["users"], login_username, login_password)
+                
                 if found:
                     with st.spinner("Logging in..."):
                         # Writing to the notebook  (Slide: "Writing to the Notebook")
