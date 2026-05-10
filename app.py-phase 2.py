@@ -92,9 +92,14 @@ def load_inventory():
 
 def load_sales():
     if sales_file.exists():
-        with open(sales_file, "r", encoding="utf-8") as f:
+        with open(sales_file, 'r', encoding='utf-8') as f:
             return json.load(f)
-    return []
+    # file does not exist yet - write the default sales data
+    default = []
+    with open(sales_file, 'w', encoding='utf-8') as f:
+        json.dump(default, f, indent=2)
+    return default
+
 
 def load_users():
     default = [
