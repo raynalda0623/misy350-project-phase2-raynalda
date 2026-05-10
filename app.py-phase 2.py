@@ -210,55 +210,39 @@ if "messages" not in st.session_state:
         {"role": "assistant", "content": "Hi! How can I help you today?"}
     ]
 
-#Chatbox Responses
+## AI Assistant
+# i used this to replace the simulated chatbot
+# it pulls from the inventory and sales data
 
-def simulated_chatbot(message):
-    message = message.lower().strip()
-    inventory = st.session_state["inventory"]
+def build_ai_prompt(inventory, sales):
+    prompt = "You are a helpful assistant for a bakery shop.\n"
+    prompt = prompt + "Use the data below to answer the user questions.\n"
+    prompt = prompt + "If the answer is not in the data say you dont know.\n\n"
 
-    # Response 1 
-    if any(w in message for w in ["low", "running out", "low stock", "almost out"]):
-        low = [i for i in inventory if i["stock"] < 5]
-        if not low:
-            return "No items are critically low right now."
-        lines = "\n".join(f"- **{i['name']}**: {i['stock']} left" for i in low)
-        return f" **Items running low (stock < 5):**\n\n{lines}"
+    prompt = prompt + "here is the inventory:\n"
+    for item in inventory:
+        prompt = prompt + item["name"] + " stock: " + str(item["stock"]) + " price: " + str(item["price"]) + "\n"
 
-    # Response 2 
-    elif any(w in message for w in ["flag", "flagged", "marked", "alert"]):
-        flagged = [i for i in inventory if i.get("flagged")]
-        if not flagged:
-            return "No items are currently flagged."
-        lines = "\n".join(f"- **{i['name']}** ({i['stock']} in stock)" for i in flagged)
-        return f" **Flagged items:**\n\n{lines}"
+    prompt = prompt + "\nhere is the recent sales:\n"
+    for s in sales[-10:]:
+        prompt = prompt + s["item"] + " qty: " + str(s["quantity"]) + " total: " + str(s["total"]) + " by: " + s["logged_by"] + "\n"
 
-    # Response 3 
-    elif any(w in message for w in ["value", "worth", "total value", "inventory value"]):
-        total = sum(i["price"] * i["stock"] for i in inventory)
-        return f"Total estimated inventory value: **${total:,.2f}**"
+    return prompt
 
-    # Response 4 
-    elif any(w in message for w in ["most stock", "highest stock", "most items", "best stocked"]):
-        top = max(inventory, key=lambda i: i["stock"])
-        return f"Best-stocked item: **{top['name']}** with **{top['stock']}** units."
 
-    # Response 5
-    elif any(w in message for w in ["help", "what can you", "commands", "hi", "hello", "hey"]):
-        return (
-            " Here's what you can ask me:\n\n"
-            "- *What items are low on stock?*\n"
-            "- *Are there any flagged items?*\n"
-            "- *What is the total inventory value?*\n"
-            "- *What item has the most stock?*"
-        )
+def get_ai_response(client, chat_history, inventory, sales):
+    prompt = build_ai_prompt(inventory, sales)
 
-    # Fallback
-    return (
-        " I'm not sure about that yet. Try:\n"
-        "- *What items are low on stock?*\n"
-        "- *What is the total inventory value?*\n"
-        "- *Are there any flagged items?*"
+    prompt_message = [{"role": "system", "content": prompt}]
+    messages = prompt_message + chat_history
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=messages,
+        temperature=0.2,
     )
+
+    return response.choices[0].message.content
 #Sidebar
 
 with st.sidebar:
