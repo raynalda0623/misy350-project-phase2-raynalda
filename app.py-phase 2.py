@@ -42,6 +42,28 @@ def find_user(users, username, password):
             return u
     return None
 
+def register_user(users, username, password, confirm):
+    username = username.strip()
+    password = password.strip()
+ 
+    if username == '' or password == '' or confirm.strip() == '':
+        return None, 'Please fill in all fields.'
+ 
+    if password != confirm.strip():
+        return None, 'Passwords do not match.'
+ 
+    if len(password) < 4:
+        return None, 'Password must be at least 4 characters.'
+ 
+    for u in users:
+        if u['username'] == username:
+            return None, 'That username is already taken.'
+ 
+    new_user = {'username': username, 'password': password, 'role': 'Employee'}
+    users.append(new_user)
+    return new_user, 'Account created! You can now log in as ' + username + '.'
+
+
 #Inventory
 
 def load_inventory():
