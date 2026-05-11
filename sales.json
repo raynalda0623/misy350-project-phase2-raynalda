@@ -17,3 +17,12 @@
   "logged_by": "alice",    
   "date": "2025-01-10 10:30"},
 
+    {"sale_id": "I9J0K1L2", 
+  "item": "Bagel",            
+  "item_id": 7, 
+  "quantity": 5, 
+  "unit_price": 2.00, 
+  "total": 10.00, 
+  "logged_by": "employee", 
+  "date": "2025-01-10 11:00"},
+
