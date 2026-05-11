@@ -79,3 +79,12 @@
   "total": 14.00, 
   "logged_by": "employee", 
   "date": "2025-01-13 11:45"},
+
+   {"sale_id": "K7L8M9N0", 
+  "item": "Sourdough Loaf",   
+  "item_id": 1, 
+  "quantity": 1, 
+  "unit_price": 8.50, 
+  "total": 8.50,  
+  "logged_by": "alice",    
+  "date": "2025-01-14 09:00"}
