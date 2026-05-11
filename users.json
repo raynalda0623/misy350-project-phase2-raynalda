@@ -7,3 +7,9 @@
   {"username": "employee", 
   "password": "employee123", 
   "role": "Employee"},
+
+
+  {"username": "alice",    
+  "password": "alice123",    
+  "role": "Employee"}
+]
