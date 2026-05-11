@@ -26,3 +26,21 @@
   "logged_by": "employee", 
   "date": "2025-01-10 11:00"},
 
+   {"sale_id": "M3N4O5P6", 
+  "item": "Cinnamon Roll",    
+  "item_id": 4, 
+  "quantity": 4, 
+  "unit_price": 4.00, 
+  "total": 16.00, 
+  "logged_by": "alice",    
+  "date": "2025-01-11 08:45"},
+
+  {"sale_id": "Q7R8S9T0", 
+  "item": "Lemon Tart",       
+  "item_id": 8, 
+  "quantity": 2, 
+  "unit_price": 5.25, 
+  "total": 10.50, 
+  "logged_by": "employee", 
+  "date": "2025-01-11 13:20"},
+
