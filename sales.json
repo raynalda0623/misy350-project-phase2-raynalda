@@ -6,5 +6,14 @@
   "unit_price": 3.25, 
   "total": 9.75,  
   "logged_by": "employee", 
-  "date": "2025-01-10 09:15"}
+  "date": "2025-01-10 09:15"},
+
+   {"sale_id": "E5F6G7H8", 
+  "item": "Sourdough Loaf",   
+  "item_id": 1, 
+  "quantity": 2, 
+  "unit_price": 8.50, 
+  "total": 17.00, 
+  "logged_by": "alice",    
+  "date": "2025-01-10 10:30"},
 
